@@ -31,9 +31,7 @@ export async function POST(request : NextRequest) {
         })
     const roomName = generateRandomString() 
     //save meeting to database - with expire time 
-    const expireAt = Temporal.Now.instant().add({
-        days: 3,
-    });
+    const expireAt = Temporal.Now.instant().add({ hours: 72 });
     const meeting = await db.orm.public.Meeting.create({
         roomName, 
         hostId : user.id, 

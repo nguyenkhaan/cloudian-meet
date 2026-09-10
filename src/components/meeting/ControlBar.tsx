@@ -7,11 +7,26 @@ import {
     PhoneOff,
     Video,
     VideoOff,
+    LoaderCircle,
 } from "lucide-react"
-import { useLocalParticipant, useRoomContext } from "@livekit/components-react";
+import { useLocalParticipant } from "@livekit/components-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { toast } from "react-hot-toast";
 
-export function ControlBar() {
-    const room = useRoomContext()
+interface ControlBarProps {
+    roomName: string;
+}
+
+type MeetingSession = {
+    roomName?: string;
+    name?: string;
+    password?: string;
+}
+
+export function ControlBar({ roomName }: ControlBarProps) {
+    const router = useRouter()
+    const [leaving, setLeaving] = useState(false)
     const {
         localParticipant,
         isMicrophoneEnabled,
@@ -38,7 +53,41 @@ export function ControlBar() {
     }
 
     const leaveRoom = async () => {
-        await room.disconnect()
+        const savedSession = sessionStorage.getItem("cloudian-meet-session")
+        let session: MeetingSession | null = null
+
+        try {
+            session = savedSession ? JSON.parse(savedSession) as MeetingSession : null
+        } catch {
+            toast.error("Unable to verify your meeting session")
+            return
+        }
+
+        if (session?.roomName !== roomName || !session.name || !session.password) {
+            toast.error("Unable to verify your meeting session")
+            return
+        }
+
+        setLeaving(true)
+        try {
+            const response = await fetch(`/api/meeting/${encodeURIComponent(roomName)}/leave`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name: session.name, password: session.password }),
+            })
+            const payload = await response.json().catch(() => ({})) as { error?: string }
+
+            if (!response.ok) {
+                throw new Error(payload.error ?? "Unable to leave meeting")
+            }
+
+            sessionStorage.removeItem("cloudian-meet-session")
+            sessionStorage.removeItem("cloudian-meet-preferences")
+            router.replace(`/meeting/${encodeURIComponent(roomName)}/ended`)
+        } catch (error) {
+            toast.error(error instanceof Error ? error.message : "Unable to leave meeting")
+            setLeaving(false)
+        }
     }
     return (
         <div className="flex items-center justify-center gap-1 sm:gap-2">
@@ -68,11 +117,12 @@ export function ControlBar() {
             </button>
             <button
                 onClick={leaveRoom}
+                disabled={leaving}
                 aria-label="Leave call"
                 title="Leave call"
-                className="grid size-10 place-items-center rounded-full bg-[var(--meeting-danger)] text-[var(--meeting-on-accent)] transition-colors hover:bg-[var(--meeting-danger-hover)] focus:outline-none focus:ring-2 focus:ring-[var(--meeting-danger)] sm:size-11"
+                className="grid size-10 place-items-center rounded-full bg-[var(--meeting-danger)] text-[var(--meeting-on-accent)] transition-colors hover:bg-[var(--meeting-danger-hover)] focus:outline-none focus:ring-2 focus:ring-[var(--meeting-danger)] disabled:cursor-not-allowed disabled:opacity-60 sm:size-11"
             >
-                <PhoneOff className="size-5" />
+                {leaving ? <LoaderCircle className="size-5 animate-spin" /> : <PhoneOff className="size-5" />}
             </button>
         </div>
     )

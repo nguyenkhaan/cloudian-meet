@@ -22,4 +22,12 @@
   --meeting-danger: #ea4335;
   --meeting-danger-hover: #d63b30;
   --meeting-on-accent: #ffffff;
+  --home-page: #ffffff;
+  --home-surface: #ffffff;
+  --home-text: #202124;
+  --home-text-muted: #5f6368;
+  --home-border: #dadce0;
+  --home-focus-ring: #aecbfa;
+  --home-dialog-backdrop: #20212480;
+  --home-dialog-code: #f1f3f4;
 }

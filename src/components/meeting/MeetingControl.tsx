@@ -31,7 +31,7 @@ export default function MeetingControl({ roomName, sidebarOpen, onSidebarToggle 
                     <span className="truncate text-sm font-medium text-[var(--meeting-text)]">{roomName}</span>
                 </div>
                 <div className="col-start-2">
-                    <ControlBar />
+                    <ControlBar roomName={roomName} />
                 </div>
                 <div className="flex items-center justify-end gap-1">
                     <button

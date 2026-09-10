@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useMemo, useState, useSyncExternalStore } from "react";
 import { LiveKitRoom, RoomAudioRenderer } from "@livekit/components-react";
 import VideoGrid from "./VideoGrid";
 import MeetingControl from "./MeetingControl"
@@ -10,67 +10,72 @@ interface MeetingRoomProps {
     roomName: string;
 }
 
+type MeetingSession = {
+    roomName: string;
+    token: string;
+    serverUrl: string;
+}
+
+type MeetingPreferences = {
+    cameraEnabled: boolean;
+    microphoneEnabled: boolean;
+}
+
+const subscribeToStorage = () => () => {};
+
 export default function MeetingRoom({
   roomName,
 }: MeetingRoomProps) {
-    const [token, setToken] = useState<string | null>(null);
-    const [serverUrl, setServerUrl] = useState<string | null>(null);
-    const [error, setError] = useState<string | null>(null);
+    const storedSession = useSyncExternalStore<string | null | undefined>(
+        subscribeToStorage,
+        () => sessionStorage.getItem("cloudian-meet-session"),
+        () => undefined,
+    );
+    const storedPreferences = useSyncExternalStore(
+        subscribeToStorage,
+        () => sessionStorage.getItem("cloudian-meet-preferences"),
+        () => null,
+    );
+    const session = useMemo(() => {
+        try {
+            return storedSession ? (JSON.parse(storedSession) as MeetingSession) : null;
+        } catch {
+            return null;
+        }
+    }, [storedSession]);
+    const preferences = useMemo<MeetingPreferences>(() => {
+        try {
+            return storedPreferences
+                ? { cameraEnabled: true, microphoneEnabled: true, ...JSON.parse(storedPreferences) }
+                : { cameraEnabled: true, microphoneEnabled: true };
+        } catch {
+            return { cameraEnabled: true, microphoneEnabled: true };
+        }
+    }, [storedPreferences]);
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
-    useEffect(() => {
-        async function fetchToken() {
-            try {
-                const response = await fetch("/api/token", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    roomName,
-                    identity: `user-${crypto.randomUUID()}`,
-                }),
-                });
-
-                if (!response.ok) {
-                throw new Error("Failed to get LiveKit token");
-                }
-
-                const payload = await response.json();
-                setToken(payload.token);
-                setServerUrl(payload.serverUrl);
-            } catch (error) 
-            {
-                console.error(error);
-                setError("Failed to connect to meeting");
-            }
-        }
-
-        fetchToken();
-    }, [roomName]);
-
-    if (error) {
-        return (
-        <div className="flex min-h-screen items-center justify-center bg-[var(--meeting-page)] p-6 text-[var(--meeting-text)]">
-            <p className="rounded-xl border border-[var(--meeting-border)] bg-[var(--meeting-surface)] px-5 py-4 shadow-sm">{error}</p>
-        </div>
-        );
-    }
-    if (!token || !serverUrl) {
+    if (storedSession === undefined) {
         return (
         <div className="flex min-h-screen items-center justify-center bg-[var(--meeting-page)] text-[var(--meeting-text-muted)]">
             Connecting to meeting…
         </div>
         );
     }
+    if (!session || session.roomName !== roomName || !session.token || !session.serverUrl) {
+        return (
+        <div className="flex min-h-screen items-center justify-center bg-[var(--meeting-page)] p-6 text-[var(--meeting-text)]">
+            <p className="rounded-xl border border-[var(--meeting-border)] bg-[var(--meeting-surface)] px-5 py-4 shadow-sm">Join this meeting from the home page first.</p>
+        </div>
+        );
+    }
 
     return (
         <LiveKitRoom
-        token={token}
-        serverUrl={serverUrl}
+        token={session.token}
+        serverUrl={session.serverUrl}
         connect={true}
-        audio={true}
-        video={true}
+        audio={preferences.microphoneEnabled}
+        video={preferences.cameraEnabled}
         className="flex h-dvh flex-col overflow-hidden bg-[var(--meeting-page)]"
         >
             <RoomAudioRenderer /> 

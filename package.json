@@ -11,6 +11,7 @@
     "contract:emit": "prisma contract emit"
   },
   "dependencies": {
+    "@js-temporal/polyfill": "^0.5.1",
     "@livekit/components-react": "^2.9.24",
     "@prisma/adapter-pg": "^7.10.0",
     "@prisma/client": "^7.10.0",
@@ -22,7 +23,8 @@
     "next": "16.3.4",
     "pg": "^8.23.0",
     "react": "19.2.8",
-    "react-dom": "19.2.8"
+    "react-dom": "19.2.8",
+    "react-hot-toast": "^2.6.0"
   },
   "devDependencies": {
     "@prisma/cli-engine": "0.2.3",
