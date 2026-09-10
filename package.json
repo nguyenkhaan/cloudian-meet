@@ -1,29 +1,39 @@
 {
   "name": "cloudian-meet",
+  "type": "module",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "contract:emit": "prisma contract emit"
   },
   "dependencies": {
     "@livekit/components-react": "^2.9.24",
+    "@prisma/adapter-pg": "^7.10.0",
+    "@prisma/client": "^7.10.0",
+    "@prisma/orm-postgres": "^8.0.0-rc.9",
+    "dotenv": "^17.4.2",
     "livekit-client": "^2.22.3",
     "livekit-server-sdk": "^2.19.0",
     "lucide-react": "^1.44.0",
     "next": "16.3.4",
+    "pg": "^8.23.0",
     "react": "19.2.8",
     "react-dom": "19.2.8"
   },
   "devDependencies": {
+    "@prisma/cli-engine": "0.2.3",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
+    "@types/pg": "^8.23.1",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.3.4",
+    "prisma": "^8.0.0-rc.10",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
