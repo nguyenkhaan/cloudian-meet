@@ -1,4 +1,5 @@
 //Endpoint de lay token: http://localhost:3000/api/token
+import { LocalParticipant } from 'livekit-client';
 import {AccessToken} from 'livekit-server-sdk'
 
 const API_KEY = process.env.LIVEKIT_API_KEY 
@@ -30,6 +31,10 @@ export async function POST(request : Request) {
     }) 
     const jwt = await token.toJwt() 
     return Response.json({
-        token: jwt 
+        token: jwt, 
+        serverUrl: LIVEKIT_URL, 
+        localParticipant: {
+            identity
+        }
     })
 }
