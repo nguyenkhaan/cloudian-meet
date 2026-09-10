@@ -24,7 +24,7 @@ export default function MeetingControl({ roomName, sidebarOpen, onSidebarToggle 
     return (
         <div className="pointer-events-none absolute inset-x-2 bottom-2 z-40 sm:inset-x-3 sm:bottom-3">
             <div className="pointer-events-auto mx-auto grid min-h-16 w-full grid-cols-[1fr_auto_1fr] items-center rounded-2xl border border-[var(--meeting-border)] bg-[var(--meeting-surface)]/95 px-2 shadow-2xl backdrop-blur-xl sm:rounded-full sm:px-3">
-                <div className="hidden min-w-0 items-center gap-3 px-2 md:flex">
+                <div className="hidden min-w-0 items-center gap-3 px-2 xl:flex">
                     <Clock3 className="size-4 shrink-0 text-[var(--meeting-text-muted)]" />
                     <span className="shrink-0 text-sm text-[var(--meeting-text)]">{time}</span>
                     <span className="text-[var(--meeting-text-muted)]">•</span>

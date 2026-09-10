@@ -11,7 +11,7 @@ export default function MeetingSidebar({ onClose }: MeetingSidebarProps) {
     const participants = useParticipants()
 
     return (
-        <aside className="absolute inset-x-3 bottom-24 top-3 z-30 flex flex-col overflow-hidden rounded-xl border border-[var(--meeting-border)] bg-[var(--meeting-surface)] shadow-2xl sm:relative sm:inset-auto sm:my-3 sm:mr-3 sm:w-80 sm:shrink-0 lg:w-96">
+        <aside className="absolute inset-x-3 bottom-24 top-3 z-30 flex flex-col overflow-hidden rounded-xl border border-[var(--meeting-border)] bg-[var(--meeting-surface)] shadow-2xl sm:left-auto sm:w-80 xl:relative xl:inset-auto xl:my-3 xl:mr-3 xl:w-96 xl:shrink-0">
             <header className="flex h-14 shrink-0 items-center justify-between border-b border-[var(--meeting-border)] px-4">
                 <h2 className="font-medium text-[var(--meeting-text)]">Participants ({participants.length})</h2>
                 <button

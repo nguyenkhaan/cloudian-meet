@@ -18,27 +18,29 @@ export default function VideoGrid()  {
     const layout = cameraTracks.length <= 1
         ? "grid-cols-1 max-w-5xl"
         : cameraTracks.length <= 2
-            ? "grid-cols-1 sm:grid-cols-2 max-w-6xl"
+            ? "grid-cols-1 xl:grid-cols-2 max-w-6xl"
             : cameraTracks.length <= 4
-                ? "grid-cols-2 max-w-5xl"
+                ? "grid-cols-1 xl:grid-cols-2 max-w-5xl"
                 : cameraTracks.length <= 9
-                    ? "grid-cols-2 sm:grid-cols-3 max-w-5xl"
-                    : "grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 max-w-6xl"
+                    ? "grid-cols-1 xl:grid-cols-3 max-w-5xl"
+                    : "grid-cols-1 xl:grid-cols-4 max-w-6xl"
 
     if (screenShare) {
         return (
-            <div className="flex h-full min-h-0 flex-col gap-2 p-2 sm:flex-row sm:p-3">
-                <ParticipantTile
-                    trackRef={screenShare}
-                    className={`${tileClass} h-full min-w-0 flex-1 [&_.lk-video-track]:object-contain`}
-                />
-                <aside aria-label="Participant videos" className="h-24 shrink-0 overflow-x-auto sm:h-full sm:w-44 sm:overflow-x-hidden sm:overflow-y-auto lg:w-56 xl:w-64">
-                    <div className="flex h-full gap-2 sm:h-auto sm:flex-col">
+            <div className="flex h-full min-h-0 items-center justify-center gap-2 p-2 sm:p-3 xl:flex-row xl:items-stretch">
+                <div className="flex min-h-0 min-w-0 flex-1 items-center justify-center">
+                    <ParticipantTile
+                        trackRef={screenShare}
+                        className={`${tileClass} aspect-video max-h-full w-full max-w-6xl [&_.lk-video-track]:object-contain`}
+                    />
+                </div>
+                <aside aria-label="Participant videos" className="hidden h-full w-64 shrink-0 overflow-y-auto xl:block">
+                    <div className="flex flex-col gap-2">
                         {cameraTracks.map((track) => (
                             <ParticipantTile
                                 key={`${track.participant.identity}-${track.source}`}
                                 trackRef={track}
-                                className={`${tileClass} aspect-video h-full shrink-0 sm:h-auto sm:w-full [&_.lk-video-track]:object-cover`}
+                                className={`${tileClass} aspect-video w-full shrink-0 [&_.lk-video-track]:object-cover`}
                             />
                         ))}
                     </div>
@@ -49,11 +51,11 @@ export default function VideoGrid()  {
 
     return (
         <div className={`mx-auto grid h-full w-full content-center gap-1.5 p-2 sm:gap-2 sm:p-3 ${layout}`}>
-            {cameraTracks.map((track) => (
+            {cameraTracks.map((track, index) => (
                 <ParticipantTile 
                     key={`${track.participant.identity}-${track.source}`}
                     trackRef={track}
-                    className={`${tileClass} aspect-video [&_.lk-video-track]:object-cover`}
+                    className={`${tileClass} aspect-video [&_.lk-video-track]:object-cover ${index === 0 ? "" : "hidden xl:block"}`}
                 /> 
             ))}
         </div>

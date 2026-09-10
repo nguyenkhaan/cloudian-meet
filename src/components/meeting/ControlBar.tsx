@@ -62,7 +62,7 @@ export function ControlBar() {
                 onClick={toggleScreenShare}
                 aria-label={isScreenShareEnabled ? "Stop presenting" : "Present now"}
                 title={isScreenShareEnabled ? "Stop presenting" : "Present now"}
-                className={`hidden size-10 place-items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--meeting-primary)] sm:grid sm:size-11 ${isScreenShareEnabled ? "bg-[var(--meeting-selected)] text-[var(--meeting-primary)]" : "bg-[var(--meeting-control)] text-[var(--meeting-on-accent)] hover:bg-[var(--meeting-control-hover)]"}`}
+                className={`grid size-10 place-items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--meeting-primary)] sm:size-11 ${isScreenShareEnabled ? "bg-[var(--meeting-selected)] text-[var(--meeting-primary)]" : "bg-[var(--meeting-control)] text-[var(--meeting-on-accent)] hover:bg-[var(--meeting-control-hover)]"}`}
             >
                 {isScreenShareEnabled? <MonitorUp className="size-5"/> : <MonitorDown className="size-5" />}
             </button>
