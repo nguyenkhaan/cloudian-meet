@@ -7,3 +7,6 @@
 - @livekit/components-react: Chứa các component giúp chúng ta xây dựng UI nhanh hơn. 
 
 Cài đặt server SDK: bun add livekit-server-sdk 
+
+
+Các control phổ biến: bun add @livekit/components-react 
