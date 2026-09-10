@@ -1,5 +1,19 @@
 // use prisma-next
 // Contract inferred from the live database schema. Edit as needed, then run `prisma contract emit`.
 model Meeting {
+    id String @id @default(uuid())
+    title String 
+    roomName String 
+    hostId String 
+    createdAt DateTime @default(now())
+    expireAt DateTime 
+    user   User   @relation(fields: [hostId], references: [id], onDelete: Cascade)
+}
+model User {
+    id String @id @default(uuid()) 
+    name String 
+    password String 
+    createdAt DateTime @default(now())
+    meetings Meeting[] 
     
 }
