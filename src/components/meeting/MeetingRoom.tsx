@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { LiveKitRoom } from "@livekit/components-react";
+import { ControlBar, LiveKitRoom } from "@livekit/components-react";
 import VideoGrid from "./VideoGrid";
 import MeetingControl from "./MeetingControl"
 
@@ -73,6 +73,9 @@ export default function MeetingRoom({
         >
             <div className="flex-1">
                 <VideoGrid />
+            </div>
+            <div className="p-4">
+                <ControlBar /> 
             </div>
             <MeetingControl />
         </LiveKitRoom>
