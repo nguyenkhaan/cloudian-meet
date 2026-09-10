@@ -1,2 +1,25 @@
 @import "tailwindcss";
 
+:root {
+  color-scheme: dark;
+  --meeting-page: #111111;
+  --meeting-surface: #1e1e1e;
+  --meeting-surface-muted: #2b2b2b;
+  --meeting-video: #252525;
+  --meeting-video-muted: #5f6368;
+  --meeting-hover: #333333;
+  --meeting-avatar: #5f6368;
+  --meeting-selected: #253650;
+  --meeting-overlay: #202124cc;
+  --meeting-text: #e8eaed;
+  --meeting-text-muted: #9aa0a6;
+  --meeting-border: #383838;
+  --meeting-primary: #1a73e8;
+  --meeting-primary-hover: #185abc;
+  --meeting-control: #1a73e8;
+  --meeting-control-hover: #185abc;
+  --meeting-speaking: #81c995;
+  --meeting-danger: #ea4335;
+  --meeting-danger-hover: #d63b30;
+  --meeting-on-accent: #ffffff;
+}

@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ControlBar, LiveKitRoom, RoomAudioRenderer } from "@livekit/components-react";
+import { LiveKitRoom, RoomAudioRenderer } from "@livekit/components-react";
 import VideoGrid from "./VideoGrid";
 import MeetingControl from "./MeetingControl"
+import MeetingSidebar from "./MeetingSidebar";
 
 interface MeetingRoomProps {
     roomName: string;
@@ -15,6 +16,7 @@ export default function MeetingRoom({
     const [token, setToken] = useState<string | null>(null);
     const [serverUrl, setServerUrl] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
+    const [sidebarOpen, setSidebarOpen] = useState(false);
 
     useEffect(() => {
         async function fetchToken() {
@@ -49,15 +51,15 @@ export default function MeetingRoom({
 
     if (error) {
         return (
-        <div className="flex min-h-screen items-center justify-center">
-            {error}
+        <div className="flex min-h-screen items-center justify-center bg-[var(--meeting-page)] p-6 text-[var(--meeting-text)]">
+            <p className="rounded-xl border border-[var(--meeting-border)] bg-[var(--meeting-surface)] px-5 py-4 shadow-sm">{error}</p>
         </div>
         );
     }
     if (!token || !serverUrl) {
         return (
-        <div className="flex min-h-screen items-center justify-center">
-            Connecting...
+        <div className="flex min-h-screen items-center justify-center bg-[var(--meeting-page)] text-[var(--meeting-text-muted)]">
+            Connecting to meeting…
         </div>
         );
     }
@@ -69,16 +71,24 @@ export default function MeetingRoom({
         connect={true}
         audio={true}
         video={true}
-        className="flex min-h-screen flex-col"
+        className="flex h-dvh flex-col overflow-hidden bg-[var(--meeting-page)]"
         >
             <RoomAudioRenderer /> 
-            <div className="flex-1">
-                <VideoGrid />
+            <div className="relative flex min-h-0 flex-1 pb-20 sm:pb-24">
+                <div className="min-w-0 flex-1">
+                    <VideoGrid />
+                </div>
+                {sidebarOpen && (
+                    <MeetingSidebar
+                        onClose={() => setSidebarOpen(false)}
+                    />
+                )}
             </div>
-            <div className="p-4">
-                <ControlBar /> 
-            </div>
-            <MeetingControl />
+            <MeetingControl
+                roomName={roomName}
+                sidebarOpen={sidebarOpen}
+                onSidebarToggle={() => setSidebarOpen((open) => !open)}
+            />
         </LiveKitRoom>
     );
 }
