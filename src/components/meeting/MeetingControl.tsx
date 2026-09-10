@@ -8,6 +8,7 @@ export default function MeetingControl() {
         <div className="flex items-center justify-center gap-4 border-t border-zinc-800 bg-zinc-950 p-4">
             <TrackToggle source={Track.Source.Microphone} /> 
             <TrackToggle source={Track.Source.Camera} /> 
+            <TrackToggle source={Track.Source.ScreenShare} />
         </div>
     )
 }

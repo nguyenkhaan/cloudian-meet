@@ -6,7 +6,11 @@ export default function VideoGrid()  {
         {
             source: Track.Source.Camera, 
             withPlaceholder : true 
-        }
+        }, 
+        {
+            source: Track.Source.ScreenShare,
+            withPlaceholder: false,
+            },
     ])
     return (
         <div className="grid h-full w-full grid-cols-1 gap-4 p-4 md:grid-cols-2">

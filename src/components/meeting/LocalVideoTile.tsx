@@ -24,7 +24,7 @@ export default function LocalVideoTile({
     } , [track]) 
     return (
         <div className="relative aspect-video overflow-hidden rounded-xl bg-zinc-900"> 
-            <video ref={videoRef} autoPlay muted playsInline className="h-full w-full object-cover"  />
+            <video ref={videoRef} autoPlay playsInline className="h-full w-full object-cover"  />
             <div className="absolute bottom-2 left-2 rounded bg-black/60 px-2 py-1 text-sm text-white">
                 {identity} (You)
             </div>
