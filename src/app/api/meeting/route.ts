@@ -1,4 +1,6 @@
 import { generateRandomString } from "@/helper/generateRandom";
+import { Temporal } from "@js-temporal/polyfill";
+import type { FieldInputTypes } from "../../../../prisma/contract";
 import { NextRequest } from "next/server";
 import {db} from '@/db'
 export async function POST(request : NextRequest) {
@@ -31,7 +33,7 @@ export async function POST(request : NextRequest) {
         })
     const roomName = generateRandomString() 
     //save meeting to database - with expire time 
-    const expireAt = Temporal.Now.instant().add({ hours: 72 });
+    const expireAt = Temporal.Now.instant().add({ hours: 72 }) as unknown as FieldInputTypes["public"]["Meeting"]["expireAt"];
     const meeting = await db.orm.public.Meeting.create({
         roomName, 
         hostId : user.id, 

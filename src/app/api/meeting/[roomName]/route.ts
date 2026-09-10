@@ -36,15 +36,14 @@ export async function POST(
     } , {
         status: 404
     }) 
-    if (meeting.expireAt <= Temporal.Now.instant()) {
+    if (meeting.expireAt.epochMilliseconds <= Date.now()) {
         return Response.json(
             { error: "Meeting has expired" },
             { status: 410 }
         );
     }
-    return {
+    return Response.json({
         roomName, 
         id : meeting.hostId, 
-
-    }
+    })
 }
