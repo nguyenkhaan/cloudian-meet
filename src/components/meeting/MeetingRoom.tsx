@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ControlBar, LiveKitRoom } from "@livekit/components-react";
+import { ControlBar, LiveKitRoom, RoomAudioRenderer } from "@livekit/components-react";
 import VideoGrid from "./VideoGrid";
 import MeetingControl from "./MeetingControl"
 
@@ -71,6 +71,7 @@ export default function MeetingRoom({
         video={true}
         className="flex min-h-screen flex-col"
         >
+            <RoomAudioRenderer /> 
             <div className="flex-1">
                 <VideoGrid />
             </div>
