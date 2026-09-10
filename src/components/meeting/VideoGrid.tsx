@@ -14,6 +14,7 @@ export default function VideoGrid()  {
     ])
     const screenShare = tracks.find((track) => track.source === Track.Source.ScreenShare)
     const cameraTracks = tracks.filter((track) => track.source === Track.Source.Camera)
+    const screenShareDimensions = screenShare?.publication?.dimensions
     const tileClass = "relative min-h-0 overflow-hidden rounded-xl bg-[var(--meeting-video)] data-[lk-speaking=true]:ring-2 data-[lk-speaking=true]:ring-[var(--meeting-speaking)] data-[lk-video-muted=false]:[&_.lk-participant-placeholder]:hidden [&_.lk-participant-media-video]:absolute [&_.lk-participant-media-video]:inset-0 [&_.lk-participant-media-video]:size-full [&_.lk-participant-placeholder]:absolute [&_.lk-participant-placeholder]:inset-0 [&_.lk-participant-placeholder]:flex [&_.lk-participant-placeholder]:items-center [&_.lk-participant-placeholder]:justify-center [&_.lk-participant-placeholder_svg]:h-20 [&_.lk-participant-placeholder_svg]:w-20 [&_.lk-participant-placeholder_svg]:rounded-full [&_.lk-participant-placeholder_svg]:bg-[var(--meeting-video-muted)] [&_.lk-participant-metadata]:contents [&_.lk-participant-metadata-item:first-child]:contents [&_.lk-participant-name]:absolute [&_.lk-participant-name]:bottom-3 [&_.lk-participant-name]:left-3 [&_.lk-participant-name]:text-xs [&_.lk-participant-name]:font-medium [&_.lk-participant-name]:text-[var(--meeting-text)] sm:[&_.lk-participant-name]:text-sm [&_.lk-track-muted-indicator-microphone]:absolute [&_.lk-track-muted-indicator-microphone]:right-2.5 [&_.lk-track-muted-indicator-microphone]:top-2.5 [&_.lk-track-muted-indicator-microphone]:rounded-full [&_.lk-track-muted-indicator-microphone]:bg-[var(--meeting-overlay)] [&_.lk-track-muted-indicator-microphone]:p-1.5 [&_.lk-track-muted-indicator-microphone]:text-[var(--meeting-text)] [&_.lk-connection-quality]:absolute [&_.lk-connection-quality]:bottom-3 [&_.lk-connection-quality]:right-3 [&_.lk-connection-quality]:text-[var(--meeting-text)] [&_.lk-focus-toggle]:hidden"
     const layout = cameraTracks.length <= 1
         ? "grid-cols-1 max-w-5xl"
@@ -31,6 +32,9 @@ export default function VideoGrid()  {
                 <div className="flex min-h-0 min-w-0 flex-1 items-center justify-center">
                     <ParticipantTile
                         trackRef={screenShare}
+                        style={screenShareDimensions?.width && screenShareDimensions.height
+                            ? { aspectRatio: `${screenShareDimensions.width} / ${screenShareDimensions.height}` }
+                            : undefined}
                         className={`${tileClass} aspect-video max-h-full w-full [&_.lk-participant-media-video]:object-contain`}
                     />
                 </div>
